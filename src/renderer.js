@@ -3,20 +3,26 @@ const { ipcRenderer } = require('electron')
 
 const pad = (str = '') => '  ' + str
 
-const render = (source, json, error) => {
+const render = ({ file, source, json, error }) => {
   if (window.json || error) {
     console.clear()
   }
 
-  console.log('%c✔ Reloads on changes', 'color: #94d82d;')
+  if (file) {
+    console.log('%c✔ Reloads on changes', 'color: #94d82d;')
+  }
 
   console.log(
-    `%cInspecting %c ${source}`,
+    `%cInspecting %c${source}`,
     'font-weight: normal; background: #f1f3f5; color: #91a7ff',
     'font-weight: bold; background: #f1f3f5; color: #91a7ff'
   )
 
-  console.log(pad('Also accessible through %c window.json'), 'font-weight: bold;')
+  console.log(
+    pad('%c(Also accessible through %cwindow.json)'),
+    'color: #adb5bd;',
+    'color: #adb5bd; font-weight: bold;'
+  )
 
   if (error) {
     console.error(error)
@@ -26,10 +32,10 @@ const render = (source, json, error) => {
 }
 
 ipcRenderer.on('json', (event, data) => {
-  render(data.source, data.json)
+  render(data)
   window.json = data.json
 })
 
 ipcRenderer.on('error', (event, data) => {
-  render(data.source, null, data.error)
+  render(data)
 })

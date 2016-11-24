@@ -15,10 +15,10 @@ const emitFromFile = (source, renderer) => {
   return readFile(source)
     .then(JSON.parse)
     .then((json) => {
-      renderer.send('json', { source, json })
+      renderer.send('json', { file: true, source, json })
     })
     .catch((error) => {
-      renderer.send('error', { source, error })
+      renderer.send('error', { file: true, source, error })
     })
 }
 
@@ -53,17 +53,22 @@ app.on('ready', () => {
   })
 
   renderer.on('did-finish-load', () => {
-    if (isUrl(source)) {
-      emitFromHttp(source, renderer)
-    } else {
-      const fileSource = resolve(process.cwd(), source)
-      const watcher = watch(fileSource)
+    try {
+      const json = JSON.parse(source)
+      renderer.send('json', { source: 'stdin', json })
+    } catch (e) {
+      if (isUrl(source)) {
+        emitFromHttp(source, renderer)
+      } else {
+        const fileSource = resolve(process.cwd(), source)
+        const watcher = watch(fileSource)
 
-      watcher.on('change', () => {
+        watcher.on('change', () => {
+          emitFromFile(fileSource, renderer)
+        })
+
         emitFromFile(fileSource, renderer)
-      })
-
-      emitFromFile(fileSource, renderer)
+      }
     }
   })
 

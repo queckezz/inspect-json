@@ -7,7 +7,11 @@
 * Reloads on file changes
 * All Chrome Devtools features at hand!
 
->  **[Get It!]()**
+## Installation
+
+```
+> npm install inspect-json
+```
 
 ## Examples
 
@@ -17,15 +21,14 @@ View a file:
 > inspect-json example.json
 ```
 
-View a file and don't react to file changes:
-
-```
-> inspect-json -n example.json
-```
-
 View JSON from a REST Endpoint
 
 ```
 > inspect-json https://api.github.com/users/mbostock
 ```
 
+View JSON from STDIN
+
+```
+>  echo { "test": true } | inspect-json
+```

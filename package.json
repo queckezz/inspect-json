@@ -1,7 +1,7 @@
 {
   "name": "inspect-json",
   "version": "0.1.0",
-  "description": "Display and inspect JSON Files using Chromium Devtools",
+  "description": "Robust manipulation and inspection of JSON data using the already familiar Chromium Devtools",
   "main": "src/index.js",
   "scripts": {
     "start": "electron ."
@@ -9,11 +9,12 @@
   "repository": "https://github.com/queckezz/electron-json-viewer",
   "author": "Fabian Eichenberger <fabian.eichenberger@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
-    "electron": "^1.4.8"
-  },
+  "devDependencies": {},
   "dependencies": {
     "chokidar": "^1.6.1",
+    "electron": "^1.4.8",
+    "execa": "^0.5.0",
+    "get-stdin": "^5.0.1",
     "got": "^6.6.3",
     "is-url": "^1.2.2",
     "minimist": "^1.2.0",
