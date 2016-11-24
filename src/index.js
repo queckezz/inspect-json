@@ -1,6 +1,5 @@
 
 const { BrowserWindow, app } = require('electron')
-const concat = require('concat-stream')
 const { ipcMain } = require('electron')
 const { readFile } = require('mz/fs')
 const { watch } = require('chokidar')

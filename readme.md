@@ -1,6 +1,4 @@
 
-# inspect-json
-
 ![./banner](art/banner.png)
 
 **Robust manipulation and inspection of JSON data using the already familiar Chromium Devtools**
