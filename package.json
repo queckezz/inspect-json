@@ -13,6 +13,7 @@
     "electron": "^1.4.8"
   },
   "dependencies": {
+    "chokidar": "^1.6.1",
     "minimist": "^1.2.0"
   }
 }

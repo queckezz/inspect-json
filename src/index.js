@@ -3,12 +3,24 @@ const { BrowserWindow, app } = require('electron')
 const concat = require('concat-stream')
 const { ipcMain } = require('electron')
 const { readFileSync } = require('fs')
+const { watch } = require('chokidar')
 const minimist = require('minimist')
 const { resolve } = require('path')
 
 const argv = minimist(process.argv.slice(2))
 const filePath = resolve(process.cwd(), argv._[0])
 let win = null
+
+const watcher = watch(filePath)
+
+const getJson = (filePath) => {
+  try {
+    const json = JSON.parse(readFileSync(filePath))
+    return [null, json]
+  } catch (e) {
+    return [e.toString(), null]
+  }
+}
 
 app.on('ready', () => {
   win = new BrowserWindow({
@@ -27,18 +39,14 @@ app.on('ready', () => {
     win = null
   })
 
-  try {
-    const json = JSON.parse(readFileSync(filePath))
-
-    renderer.on('did-finish-load', () => {
-      renderer.send('init', {
-        filePath,
-        json
-      })
+  renderer.on('did-finish-load', () => {
+    watcher.on('change', () => {
+      renderer.send('reload', { filePath, data: getJson(filePath) })
     })
-  } catch (e) {
-    console.error(e)
-  }
+
+    renderer.send('init', { filePath, data: getJson(filePath) })
+  })
+
 
   renderer.once('devtools-opened', (t) => {
     win.hide()
