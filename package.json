@@ -1,5 +1,5 @@
 {
-  "name": "electron-json-viewer",
+  "name": "inspect-json",
   "version": "0.1.0",
   "description": "Display and inspect JSON Files using Chromium Devtools",
   "main": "src/index.js",
