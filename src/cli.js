@@ -31,7 +31,7 @@ const source = args._[0]
 if (!source) {
   getStdin().then((str) => {
     if (str.length == 0) {
-      console.log(help())
+      return console.log(help())
     }
     try {
       const json = JSON.parse(str)
