@@ -10,7 +10,7 @@
 ## Installation
 
 ```
-> npm install inspect-json
+> npm install -g inspect-json
 ```
 
 ## Examples
