@@ -1,6 +1,6 @@
 {
   "name": "inspect-json",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Robust manipulation and inspection of JSON data using the already familiar Chromium Devtools",
   "main": "src/index.js",
   "bin": "src/cli.js",
