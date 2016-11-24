@@ -15,19 +15,21 @@
 
 ## Examples
 
-From a File:
+Inspect JSON from the following types.
+
+**File:**
 
 ```
 > inspect-json example.json
 ```
 
-From a REST Endpoint
+**REST Endpoint:**
 
 ```
 > inspect-json https://api.github.com/users/mbostock
 ```
 
-From `process.stdin`
+**Standard Input (CLI):**
 
 ```
 > echo { "test": true } | inspect-json
