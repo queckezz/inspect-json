@@ -3,9 +3,9 @@
 
 **Robust manipulation and inspection of JSON data using the already familiar Chromium Devtools**
 
-* Allows URLs and Files
+* Allows JSON to be passed in from URLs, Files and `process.stdin`
 * Reloads on file changes
-* All Chrome Devtools features at hand!
+* All Chromium Devtools features at hand!
 
 ## Installation
 
@@ -15,20 +15,25 @@
 
 ## Examples
 
-View a file:
+From a File:
 
 ```
 > inspect-json example.json
 ```
 
-View JSON from a REST Endpoint
+From a REST Endpoint
 
 ```
 > inspect-json https://api.github.com/users/mbostock
 ```
 
-View JSON from STDIN
+From `process.stdin`
 
 ```
->  echo { "test": true } | inspect-json
+> echo { "test": true } | inspect-json
+> webpack --stats | inspect-json
 ```
+
+## License
+
+[MIT](./license)
