@@ -2,27 +2,41 @@
 const { BrowserWindow, app } = require('electron')
 const concat = require('concat-stream')
 const { ipcMain } = require('electron')
-const { readFileSync } = require('fs')
+const { readFile } = require('mz/fs')
 const { watch } = require('chokidar')
 const minimist = require('minimist')
 const { resolve } = require('path')
+const isUrl = require('is-url')
+const got = require('got')
 
 const argv = minimist(process.argv.slice(2))
-const filePath = resolve(process.cwd(), argv._[0])
 let win = null
 
-const watcher = watch(filePath)
+const emitFromFile = (source, renderer) => {
+  return readFile(source)
+    .then(JSON.parse)
+    .then((json) => {
+      renderer.send('json', { source, json })
+    })
+    .catch((error) => {
+      renderer.send('error', { source, error })
+    })
+}
 
-const getJson = (filePath) => {
-  try {
-    const json = JSON.parse(readFileSync(filePath))
-    return [null, json]
-  } catch (e) {
-    return [e.toString(), null]
-  }
+const emitFromHttp = (source, renderer) => {
+  return got(source, { json: true })
+    .then((res) => res.body)
+    .then((json) => {
+      renderer.send('json', { source, json })
+    })
+    .catch((error) => {
+      renderer.send('error', { source, error })
+    })
 }
 
 app.on('ready', () => {
+  const source = argv._[0]
+
   win = new BrowserWindow({
     useContentSize: true,
     width: 0,
@@ -40,13 +54,19 @@ app.on('ready', () => {
   })
 
   renderer.on('did-finish-load', () => {
-    watcher.on('change', () => {
-      renderer.send('reload', { filePath, data: getJson(filePath) })
-    })
+    if (isUrl(source)) {
+      emitFromHttp(source, renderer)
+    } else {
+      const fileSource = resolve(process.cwd(), source)
+      const watcher = watch(fileSource)
 
-    renderer.send('init', { filePath, data: getJson(filePath) })
+      watcher.on('change', () => {
+        emitFromFile(fileSource, renderer)
+      })
+
+      emitFromFile(fileSource, renderer)
+    }
   })
-
 
   renderer.once('devtools-opened', (t) => {
     win.hide()
