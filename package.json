@@ -1,0 +1,9 @@
+{
+  "name": "electron-json-viewer",
+  "version": "0.1.0",
+  "description": "Display and inspect JSON Files using Chromium Devtools",
+  "main": "index.js",
+  "repository": "https://github.com/queckezz/electron-json-viewer",
+  "author": "Fabian Eichenberger <fabian.eichenberger@gmail.com>",
+  "license": "MIT"
+}
